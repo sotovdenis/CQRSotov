@@ -141,11 +141,11 @@ public class ConsoleInterface {
         String orderId = scanner.nextLine().trim();
         System.out.println("Доступные блюда:");
         for (Menu dish : Menu.values()) {
-            System.out.printf("%s - %s (%,.2f руб.)%n", dish.name(), dish.getName(), dish.getPrice());
+            System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
         }
-        System.out.print("Выберите блюдо: ");
-        String dishName = scanner.nextLine().trim();
-        Menu dish = Menu.valueOf(dishName.toUpperCase());
+        System.out.print("Выберите номер блюда: ");
+        int dishName = scanner.nextInt();
+        Menu dish = Menu.getByNumberInMenu(dishName);
         System.out.print("Введите количество: ");
         int quantity = readIntInput();
         scanner.nextLine();
@@ -171,7 +171,7 @@ public class ConsoleInterface {
 
         OrderDto order = restaurantFacade.getOrderById(orderId);
         for (int i = 0; i < order.getItems().size(); i++) {
-            System.out.println( i + 1 + ". " + order.getItems().get(i).getDishName());
+            System.out.println(i + 1 + ". " + order.getItems().get(i).getDishName());
         }
 
         System.out.print("Введите номер блюда: ");
@@ -180,14 +180,15 @@ public class ConsoleInterface {
 
         System.out.println("Доступные блюда:");
         for (Menu dish : Menu.values()) {
-            System.out.printf("%s - %s (%,.2f руб.)%n", dish.name(), dish.getName(), dish.getPrice());
+            System.out.printf( Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
         }
 
-        System.out.print("Введите новое блюдо: ");
-        String dishName = scanner.nextLine().trim();
-        Menu dish = Menu.valueOf(dishName.toUpperCase());
+        System.out.print("Введите номер нового блюда: ");
+        int newDishPointer = scanner.nextInt();
 
         boolean answerNotGiven = true;
+
+        scanner.nextLine();
 
         while (answerNotGiven) {
             System.out.println("Вы уверены, что хотите изменить блюдо?(y/n)");
@@ -200,7 +201,7 @@ public class ConsoleInterface {
                     System.out.print("Введите новое количество: ");
                     int newQuantity = readIntInput();
                     scanner.nextLine();
-                    restaurantFacade.updateOrder(orderId, pointer, dish, newQuantity);
+                    restaurantFacade.updateOrder(orderId, pointer, newDishPointer, newQuantity);
                     System.out.println("Блюдо в заказе успешно изменено!");
 
                     answerNotGiven = false;

@@ -3,7 +3,6 @@ package gpb.api.facade;
 import gpb.command.command.*;
 import gpb.command.handler.CommandBus;
 import gpb.command.model.Menu;
-import gpb.command.model.OrderItem;
 import gpb.command.model.OrderStatus;
 import gpb.query.dto.OrderDto;
 import gpb.query.dto.OrderStatisticDto;
@@ -32,9 +31,8 @@ public class RestaurantFacade {
         commandBus.dispatch(new UpdateDishQuantityCommand(orderId, dishName, newQuantity));
     }
 
-    public void updateOrder(String orderId, int pointer, Menu dish, int quantity ) {
-        OrderItem item = new OrderItem(dish.getName(), dish.getPrice(), quantity);
-        commandBus.dispatch(new UpdateOrderCommand(orderId, pointer, item));
+    public void updateOrder(String orderId, int pointer, int newDishPointer, int quantity ) {
+        commandBus.dispatch(new UpdateOrderCommand(orderId, pointer, newDishPointer, quantity));
     }
 
     public void updateOrderStatus(String orderId, OrderStatus newStatus) {

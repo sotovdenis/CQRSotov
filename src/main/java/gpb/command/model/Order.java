@@ -105,21 +105,27 @@ public class Order {
         );
     }
 
-    public void replaceItem(int point, OrderItem newDish) {
-        if (newDish == null) {
-            throw new IllegalArgumentException("Новое блюдо не может быть null");
-        }
+    public void replaceItem(int point, int newDishPoint, int quantity) {
+
         if (point < 0 || point >= items.size()) {
             throw new IllegalArgumentException("Недопустимая позиция для замены блюда");
         }
 
+        if (newDishPoint <= 0 || newDishPoint > Menu.values().length) {
+            throw new IllegalArgumentException("Недопустимая позиция для замены блюда");
+        }
+
+        Menu menuDish = Menu.getByNumberInMenu(newDishPoint);
+
+        OrderItem item = new OrderItem(menuDish.getName(), menuDish.getPrice(), quantity);
+
         items.remove(point);
 
-        items.add(point, newDish);
+        items.add(point, item);
 
         this.status = OrderStatus.IN_PROGRESS;
 
-        EventBus.getInstance().publish(new OrderUpdatedEvent(orderId, point, newDish));
+        EventBus.getInstance().publish(new OrderUpdatedEvent(orderId, point, item));
     }
 
     public void updateStatus(OrderStatus newStatus) {

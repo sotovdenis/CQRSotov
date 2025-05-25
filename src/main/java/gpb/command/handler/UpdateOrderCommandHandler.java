@@ -21,7 +21,7 @@ public class UpdateOrderCommandHandler implements CommandHandler<UpdateOrderComm
 
         Order order = orderRepository.findById(command.getOrderId());
 
-        order.replaceItem(command.getPoint(), command.getNewDish());
+        order.replaceItem(command.getPoint(), command.getNewDishPoint(), command.getQuantity());
 
         orderRepository.save(order);
 
