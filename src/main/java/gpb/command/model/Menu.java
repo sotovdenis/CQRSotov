@@ -45,6 +45,15 @@ public enum Menu {
         return numberInMenu;
     }
 
+    public static Menu getByName(String name) {
+        for (Menu menu : values()) {
+            if (menu.getName().equals(name)) {
+                return menu;
+            }
+        }
+        throw new IllegalArgumentException("Блюдо с именем '" + name + "' не найдено");
+    }
+
     public static Menu getByNumberInMenu(double numberInMenu) {
         for (Menu menu : values()) {
             if (menu.getNumberInMenu() == numberInMenu) {

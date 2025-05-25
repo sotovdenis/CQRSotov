@@ -23,6 +23,7 @@ public class Main {
         CommandBus commandBus = new CommandBus();
         commandBus.register(CreateOrderCommand.class, new CreateOrderCommandHandler(commandOrderRepository));
         commandBus.register(AddDishToOrderCommand.class, new AddDishToOrderCommandHandler(commandOrderRepository));
+        commandBus.register(RemoveDishFromOrderCommand.class, new RemoveDishFromOrderCommandHandler(commandOrderRepository));
         commandBus.register(UpdateDishQuantityCommand.class, new UpdateDishQuantityCommandHandler(commandOrderRepository));
         commandBus.register(UpdateOrderCommand.class, new UpdateOrderCommandHandler(commandOrderRepository));
         commandBus.register(UpdateOrderStatusCommand.class, new UpdateOrderStatusCommandHandler(commandOrderRepository));

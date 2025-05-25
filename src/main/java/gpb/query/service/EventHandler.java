@@ -41,6 +41,8 @@ public class EventHandler implements EventBus.EventHandler {
 
         order.updateItem(orderUpdatedEvent.getDishName(), orderUpdatedEvent.getNewQuantity());
 
+        order.update();
+
         orderRepository.save(order);
     }
 
@@ -60,6 +62,8 @@ public class EventHandler implements EventBus.EventHandler {
 
         orderView.getItems().set(point, newItem);
 
+        orderView.update();
+
         orderRepository.save(orderView);
     }
 
@@ -71,6 +75,8 @@ public class EventHandler implements EventBus.EventHandler {
                 0,
                 event.getTimestamp()
         );
+
+        orderView.update();
 
         orderRepository.save(orderView);
     }
@@ -95,24 +101,33 @@ public class EventHandler implements EventBus.EventHandler {
                 .findFirst()
                 .ifPresent(item -> item.setQuantity(event.getNewQuantity()));
 
+        orderView.update();
+
         orderRepository.save(orderView);
     }
 
     private void handleDishRemovedFromOrder(DishRemovedFromOrderEvent event) {
         OrderView orderView = orderRepository.findById(event.getOrderId());
-        orderView.getItems().removeIf(item -> item.getDishName().equals(event.getDishName()));
+        orderView.removeItem(event.getDishName());
+
         orderRepository.save(orderView);
     }
 
     private void handleOrderStatusUpdated(OrderStatusUpdatedEvent event) {
         OrderView orderView = orderRepository.findById(event.getOrderId());
         orderView.setStatus(event.getNewStatus());
+
+        orderView.update();
+
         orderRepository.save(orderView);
     }
 
     private void handleOrderClosed(OrderClosedEvent event) {
         OrderView orderView = orderRepository.findById(event.getOrderId());
         orderView.setStatus(gpb.command.model.OrderStatus.CLOSED);
+
+        orderView.update();
+
         orderRepository.save(orderView);
     }
 }

@@ -39,9 +39,10 @@ public class ConsoleInterface {
         System.out.println("4. Добавить блюдо в заказ");
         System.out.println("5. Изменить количество блюда");
         System.out.println("6. Обновить заказ");
-        System.out.println("7. Обновить статус заказа");
-        System.out.println("8. Закрыть заказ");
-        System.out.println("9. Статистика заказов");
+        System.out.println("7. Убрать блюдо из заказа");
+        System.out.println("8. Обновить статус заказа");
+        System.out.println("9. Закрыть заказ");
+        System.out.println("10. Статистика заказов");
         System.out.println("0. Выход");
         System.out.print("Выберите действие: ");
     }
@@ -71,12 +72,15 @@ public class ConsoleInterface {
                     updateOrder();
                     break;
                 case 7:
-                    updateOrderStatus();
+                    removeDishFromOrder();
                     break;
                 case 8:
-                    closeOrder();
+                    updateOrderStatus();
                     break;
                 case 9:
+                    closeOrder();
+                    break;
+                case 10:
                     showOrderStatistics();
                     break;
                 default:
@@ -139,6 +143,13 @@ public class ConsoleInterface {
     private void addDishToOrder() {
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
+
+        OrderDto order = restaurantFacade.getOrderById(orderId);
+
+        if (order == null) {
+            throw new OrderNotFoundException(orderId);
+        }
+
         System.out.println("Доступные блюда:");
         for (Menu dish : Menu.values()) {
             System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
@@ -156,12 +167,20 @@ public class ConsoleInterface {
     private void updateDishQuantity() {
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
-        System.out.print("Введите название блюда: ");
-        String dishName = scanner.nextLine().trim();
+
+        OrderDto order = restaurantFacade.getOrderById(orderId);
+        for (int i = 0; i < order.getItems().size(); i++) {
+            System.out.println(i + 1 + ". " + order.getItems().get(i).getDishName());
+        }
+
+        System.out.print("Введите номер блюда: ");
+        int pointer = scanner.nextInt();
+        Menu dish = Menu.getByNumberInMenu(pointer);
+
         System.out.print("Введите новое количество: ");
         int newQuantity = readIntInput();
         scanner.nextLine();
-        restaurantFacade.updateDishInOrder(orderId, dishName, newQuantity);
+        restaurantFacade.updateDishInOrder(orderId, dish.getName(), newQuantity);
         System.out.println("Количество блюда успешно изменено!");
     }
 
@@ -180,7 +199,7 @@ public class ConsoleInterface {
 
         System.out.println("Доступные блюда:");
         for (Menu dish : Menu.values()) {
-            System.out.printf( Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
+            System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
         }
 
         System.out.print("Введите номер нового блюда: ");
@@ -214,25 +233,34 @@ public class ConsoleInterface {
         }
     }
 
-//    private void removeDishFromOrder() {
-//        System.out.print("Введите ID заказа: ");
-//        String orderId = scanner.nextLine().trim();
-//        System.out.print("Введите название блюда: ");
-//        String dishName = scanner.nextLine().trim();
-//        restaurantFacade.removeDishFromOrder(orderId, dishName);
-//        System.out.println("Блюдо успешно удалено из заказа!");
-//    }
+    private void removeDishFromOrder() {
+        System.out.print("Введите ID заказа: ");
+        String orderId = scanner.nextLine().trim();
+        OrderDto order = restaurantFacade.getOrderById(orderId);
+        for (int i = 0; i < order.getItems().size(); i++) {
+            System.out.println(i + 1 + ". " + order.getItems().get(i).getDishName());
+        }
+
+        System.out.print("Введите номер блюда, которое хотите удалить из заказа: ");
+        int pointer = scanner.nextInt() - 1;
+        scanner.nextLine();
+        restaurantFacade.removeDishFromOrder(orderId, pointer);
+        System.out.println("Блюдо успешно удалено из заказа!");
+    }
+
 
     private void updateOrderStatus() {
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
         System.out.println("Доступные статусы:");
         for (OrderStatus status : OrderStatus.values()) {
-            System.out.println(status.name());
+            System.out.println(status.getNumberInEnum() + ". " + status.getDisplayName());
         }
-        System.out.print("Выберите новый статус: ");
-        String statusName = scanner.nextLine().trim();
-        OrderStatus newStatus = OrderStatus.valueOf(statusName.toUpperCase());
+        System.out.print("Выберите номер нового статуса: ");
+        int statusNumber = scanner.nextInt();
+
+        OrderStatus newStatus = OrderStatus.getByNumberInStatuses(statusNumber);
+
         restaurantFacade.updateOrderStatus(orderId, newStatus);
         System.out.println("Статус заказа успешно обновлен!");
     }

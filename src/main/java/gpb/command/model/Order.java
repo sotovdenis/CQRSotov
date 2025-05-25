@@ -4,6 +4,7 @@ import gpb.common.event.*;
 import gpb.common.event.base.EventBus;
 import gpb.common.exception.InvalidStatusTransitionException;
 
+import java.awt.*;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class Order {
         this.orderId = orderId;
         this.customerName = customerName;
         this.status = status;
+        this.price = 0d;
         this.items = items;
     }
 
@@ -51,12 +53,6 @@ public class Order {
 
     public double getPrice() {
         return price;
-    }
-
-    public void calculatePrice() {
-        this.price = this.items.stream()
-                .mapToDouble(OrderItem::getPrice).sum();
-
     }
 
     public void addItem(Menu menuDish, int quantity) {
@@ -93,15 +89,18 @@ public class Order {
         );
     }
 
-    public void removeItem(String dishName) {
-        boolean removed = items.removeIf(item -> item.getDishName().equals(dishName));
+    public void removeItem(int pointer) {
 
-        if (!removed) {
-            throw new IllegalArgumentException("Блюдо не найдено в заказе");
+        OrderItem item = items.get(pointer);
+
+        if (item == null) {
+            throw new RuntimeException("AAaaa");
         }
 
+        items.remove(pointer);
+
         EventBus.getInstance().publish(
-                new DishRemovedFromOrderEvent(orderId, dishName)
+                new DishRemovedFromOrderEvent(orderId, item.getDishName())
         );
     }
 
@@ -131,6 +130,14 @@ public class Order {
     public void updateStatus(OrderStatus newStatus) {
         if (newStatus == null) {
             throw new IllegalArgumentException("Статус не может быть null");
+        }
+
+        if (this.status == OrderStatus.DENIED && (newStatus != OrderStatus.CLOSED)) {
+            throw new InvalidStatusTransitionException(
+                    String.format("Клиент %s отказался от заказа." +
+                            " Нельзя менять статус." +
+                            " Возможно только закрыть.", this.getCustomerName())
+            );
         }
 
         if (!isValidStatusTransition(status, newStatus)) {

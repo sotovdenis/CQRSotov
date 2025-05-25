@@ -76,4 +76,9 @@ public class OrderView {
         this.items.removeIf(item -> item.getDishName().equals(dishName));
         this.lastUpdatedAt = LocalDateTime.now();
     }
+
+
+    public void update() {
+        this.lastUpdatedAt = LocalDateTime.now();
+    }
 }

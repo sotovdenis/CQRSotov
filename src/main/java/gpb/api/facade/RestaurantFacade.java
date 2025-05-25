@@ -43,9 +43,9 @@ public class RestaurantFacade {
         commandBus.dispatch(new CloseOrderCommand(orderId));
     }
 
-
-
-
+    public void removeDishFromOrder(String orderId, int pointer) {
+        commandBus.dispatch(new RemoveDishFromOrderCommand(orderId, pointer));
+    }
 
     public OrderDto getOrderById(String orderId) {
         return queryService.getOrderById(orderId);
