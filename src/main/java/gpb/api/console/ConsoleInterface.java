@@ -21,8 +21,17 @@ public class ConsoleInterface {
         this.scanner = new Scanner(System.in);
     }
 
+
     public void start() {
         int choice;
+        System.out.println();
+        System.out.println("██████╗ ███████╗███████╗████████╗██╗ ██████╗ ██╗  ██╗    ██████╗ ███████╗███████╗████████╗██╗ ██████╗██╗  ██╗");
+        System.out.println("██╔══██╗██╔════╝██╔════╝╚══██╔══╝██║██╔════╝ ██║ ██╔╝    ██╔══██╗██╔════╝██╔════╝╚══██╔══╝██║██╔════╝██║ ██╔╝");
+        System.out.println("██████╔╝█████╗  ███████╗   ██║   ██║██║      █████╔╝     ██████╔╝█████╗  ███████╗   ██║   ██║██║     █████╔╝ ");
+        System.out.println("██╔██╗  ██╔══╝  ╚════██║   ██║   ██║██║      ██╔═██╗     ██╔═══╝ ██╔══╝  ╚════██║   ██║   ██║██║     ██╔═██╗ ");
+        System.out.println("██║ ██╗ ███████╗███████║   ██║   ██║╚██████╗ ██║  ██╗    ██║     ███████╗███████║   ██║   ██║╚██████╗██║  ██╗");
+        System.out.println("╚═╝ ╚═╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═╝    ╚═╝     ╚══════╝╚══════╝   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝");
+        System.out.println();
         do {
             showMainMenu();
             choice = readIntInput();
@@ -31,20 +40,47 @@ public class ConsoleInterface {
         } while (choice != 0);
     }
 
+
     private void showMainMenu() {
-        System.out.println("\n===== Ресторанная система =====");
-        System.out.println("1. Создать новый заказ");
-        System.out.println("2. Показать все заказы");
-        System.out.println("3. Информация о заказе");
-        System.out.println("4. Добавить блюдо в заказ");
-        System.out.println("5. Изменить количество блюда");
-        System.out.println("6. Обновить заказ");
-        System.out.println("7. Убрать блюдо из заказа");
-        System.out.println("8. Обновить статус заказа");
-        System.out.println("9. Закрыть заказ");
-        System.out.println("10. Статистика заказов");
-        System.out.println("0. Выход");
-        System.out.print("Выберите действие: ");
+//        System.out.println("\n-----------  Рестик-Пестик ----------- ");
+//        System.out.println("----------- by  Denis  Sotov ----------- ");
+//        System.out.println("1. Создать новый заказ");
+//        System.out.println("2. Показать все заказы");
+//        System.out.println("3. Информация о заказе");
+//        System.out.println("4. Добавить блюдо в заказ");
+//        System.out.println("5. Изменить количество блюда");
+//        System.out.println("6. Обновить заказ");
+//        System.out.println("7. Убрать блюдо из заказа");
+//        System.out.println("8. Обновить статус заказа");
+//        System.out.println("9. Закрыть заказ");
+//        System.out.println("10. Статистика заказов");
+//        System.out.println("----------- ® all rights reserved ® ----------- ");
+//        System.out.println("0. Выход");
+//        System.out.print("Выберите действие: ");
+        String border = "╔═══════════════════════════════════════════════╗";
+        String footer = "╚═══════════════════════════════════════════════╝";
+
+        System.out.println(border);
+        System.out.println("║               РЕСТИК - ПЕСТИК                 ║");
+        System.out.println("║               by Denis Sotov                  ║");
+        System.out.println("║             all rights reserved ®             ║");
+        System.out.println(footer);
+
+        System.out.println("║ 1.  Создать новый заказ                       ║");
+        System.out.println("║ 2.  Показать все заказы                       ║");
+        System.out.println("║ 3.  Информация о заказе                       ║");
+        System.out.println("║ 4.  Добавить блюдо в заказ                    ║");
+        System.out.println("║ 5.  Изменить количество блюда                 ║");
+        System.out.println("║ 6.  Обновить заказ                            ║");
+        System.out.println("║ 7.  Убрать блюдо из заказа                    ║");
+        System.out.println("║ 8.  Обновить статус заказа                    ║");
+        System.out.println("║ 9.  Закрыть заказ                             ║");
+        System.out.println("║ 10. Статистика заказов                        ║");
+        System.out.println("║ 0.  Выход                                     ║");
+
+        System.out.println(footer);
+        System.out.println();
+        System.out.print("--->> Выберите действие: ");
     }
 
     private void handleMainMenuChoice(int choice) {
@@ -108,7 +144,12 @@ public class ConsoleInterface {
             System.out.println("Нет доступных заказов.");
             return;
         }
-        System.out.println("\n=== Все заказы ===");
+
+        String border = "╔══════════════════════════════════════════════════════════════════════════════════════════════╗";
+        String footer = "╚══════════════════════════════════════════════════════════════════════════════════════════════╝";
+
+        System.out.println("\n-----------------------------------------  ВСЕ ЗАКАЗЫ ----------------------------------------- ");
+        System.out.println(border);
         System.out.printf("%-36s %-15s %-25s %-15s%n", "ID", "Имя клиента", "Статус", "Общая цена");
         System.out.println("------------------------------------------------------------------------------------------------");
         for (OrderDto order : orders) {
@@ -118,13 +159,20 @@ public class ConsoleInterface {
                     order.getStatus(),
                     order.getPrice());
         }
+        System.out.println(footer);
+        System.out.println();
     }
 
     private void showOrderDetails() {
+
+        String border = "╔═══════════════════════════════════════════════╗";
+        String footer = "╚═══════════════════════════════════════════════╝";
+
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
         OrderDto order = restaurantFacade.getOrderById(orderId);
-        System.out.println("\n=== Информация о заказе ===");
+        System.out.println("\n -------------  Информация о заказе ------------- ");
+        System.out.println(border);
         System.out.println("ID заказа: " + order.getOrderId());
         System.out.println("Имя клиента: " + order.getCustomerName());
         System.out.println("Статус: " + order.getStatus());
@@ -137,11 +185,16 @@ public class ConsoleInterface {
                     item.getQuantity(),
                     item.getPrice());
         }
+        System.out.println(footer);
+        System.out.println();
     }
 
     private void addDishToOrder() {
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
+
+        String border = "╔═════════════════════════════════════════╗";
+        String footer = "╚═════════════════════════════════════════╝";
 
         OrderDto order = restaurantFacade.getOrderById(orderId);
 
@@ -150,9 +203,13 @@ public class ConsoleInterface {
         }
 
         System.out.println("Доступные блюда:");
+
+        System.out.println(border);
         for (Menu dish : Menu.values()) {
             System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
         }
+        System.out.println(footer);
+
         System.out.print("Выберите номер блюда: ");
         int dishName = scanner.nextInt();
         Menu dish = Menu.getByNumberInMenu(dishName);
@@ -184,6 +241,10 @@ public class ConsoleInterface {
     }
 
     private void updateOrder() {
+
+        String border = "╔═════════════════════════════════════════╗";
+        String footer = "╚═════════════════════════════════════════╝";
+
         System.out.print("Введите ID заказа: ");
         String orderId = scanner.nextLine().trim();
 
@@ -197,9 +258,12 @@ public class ConsoleInterface {
         scanner.nextLine();
 
         System.out.println("Доступные блюда:");
+
+        System.out.println(border);
         for (Menu dish : Menu.values()) {
             System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
         }
+        System.out.println(footer);
 
         System.out.print("Введите номер нового блюда: ");
         int newDishPointer = scanner.nextInt();
@@ -273,13 +337,22 @@ public class ConsoleInterface {
 
     private void showOrderStatistics() {
         OrderStatisticDto stats = restaurantFacade.getOrderStatistics();
-        System.out.println("\n=== Статистика заказов ===");
-        System.out.println("Всего заказов: " + stats.getTotalOrders());
-        System.out.println("Завершенных заказов: " + stats.getCompletedOrders());
-        System.out.println("Заказов в процессе: " + stats.getInProgressOrders());
-        System.out.println("Отмененных заказов: " + stats.getCancelledOrders());
-        System.out.println("Средний чек: " + stats.getAveragePrice());
+
+        String border = "╔═══════════════════════════════════════╗";
+        String footer = "╚═══════════════════════════════════════╝";
+
+        System.out.println("\n ---------- Статистика заказов ---------- ");
+
+        System.out.println(border);
+
+        System.out.println("  Всего заказов:                  " + stats.getTotalOrders());
+        System.out.println("  Завершенных заказов:            " + stats.getCompletedOrders());
+        System.out.println("  Заказов в процессе:             " + stats.getInProgressOrders());
+        System.out.println("  Отмененных заказов:             " + stats.getCancelledOrders());
+        System.out.println("  Средний чек:                    " + stats.getAveragePrice());
         System.out.println("Среднее количество блюд на заказ: " + String.format("%.2f", stats.getAverageItemsPerOrder()));
+
+        System.out.println(footer);
     }
 
     private int readIntInput() {
