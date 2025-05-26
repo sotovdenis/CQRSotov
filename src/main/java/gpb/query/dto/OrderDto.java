@@ -12,7 +12,6 @@ public class OrderDto {
     private OrderStatus status;
     private double price;
     private LocalDateTime createdAt;
-    private LocalDateTime lastUpdatedAt;
     private List<OrderItemView> items;
 
     public OrderDto(String orderId,
@@ -26,7 +25,6 @@ public class OrderDto {
         this.status = status;
         this.price = price;
         this.createdAt = createdAt;
-        this.lastUpdatedAt = createdAt;
         this.items = items;
     }
 
@@ -46,9 +44,6 @@ public class OrderDto {
         return createdAt;
     }
 
-    public LocalDateTime getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
 
     public List<OrderItemView> getItems() {
         return items;
@@ -56,7 +51,6 @@ public class OrderDto {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
-        this.lastUpdatedAt = LocalDateTime.now();
     }
 
     public double getPrice() {
@@ -65,7 +59,6 @@ public class OrderDto {
 
     public void addItem(OrderItemView item) {
         this.items.add(item);
-        this.lastUpdatedAt = LocalDateTime.now();
     }
 }
 

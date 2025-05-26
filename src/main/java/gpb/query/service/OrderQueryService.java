@@ -1,10 +1,12 @@
 package gpb.query.service;
 
 import gpb.query.dto.OrderDto;
+import gpb.query.dto.OrderStatisticDto;
 import gpb.query.model.OrderItemView;
 import gpb.query.model.OrderView;
 import gpb.query.repository.OrderViewRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,5 +61,34 @@ public class OrderQueryService {
         return items.stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
+    }
+
+    public OrderStatisticDto getOrderStatistics() {
+        List<OrderView> orders = orderRepository.findAll();
+
+        int totalOrders = orders.size();
+        int completedOrders = (int) orders.stream()
+                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.COMPLETED)
+                .count();
+        int inProgressOrders = (int) orders.stream()
+                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.IN_PROGRESS)
+                .count();
+        int cancelledOrders = (int) orders.stream()
+                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.CANCELLED)
+                .count();
+
+        double averageItemsPerOrder = orders.isEmpty() ? 0 :
+                orders.stream().mapToDouble(order -> order.getItems().size()).average().orElse(0);
+
+        double averagePrice = orders.stream().mapToDouble(OrderView::getPrice).sum();
+
+        return new OrderStatisticDto(
+                totalOrders,
+                completedOrders,
+                inProgressOrders,
+                cancelledOrders,
+                averagePrice,
+                averageItemsPerOrder
+        );
     }
 }

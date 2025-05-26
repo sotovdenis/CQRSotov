@@ -130,7 +130,6 @@ public class ConsoleInterface {
         System.out.println("Статус: " + order.getStatus());
         System.out.println("Общая цена: " + String.format("%,.2f руб.", order.getPrice()));
         System.out.println("Создан: " + order.getCreatedAt().format(dateFormatter));
-        System.out.println("Последнее обновление: " + order.getLastUpdatedAt().format(dateFormatter));
         System.out.println("Блюда:");
         for (var item : order.getItems()) {
             System.out.printf("- %s (%d шт.) - %,.2f руб.%n",

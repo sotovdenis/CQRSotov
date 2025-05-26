@@ -31,7 +31,7 @@ public class RestaurantFacade {
         commandBus.dispatch(new UpdateDishQuantityCommand(orderId, dishName, newQuantity));
     }
 
-    public void updateOrder(String orderId, int pointer, int newDishPointer, int quantity ) {
+    public void updateOrder(String orderId, int pointer, int newDishPointer, int quantity) {
         commandBus.dispatch(new UpdateOrderCommand(orderId, pointer, newDishPointer, quantity));
     }
 
@@ -60,31 +60,6 @@ public class RestaurantFacade {
     }
 
     public OrderStatisticDto getOrderStatistics() {
-        List<OrderDto> orders = queryService.getAllOrders();
-
-        int totalOrders = orders.size();
-        int completedOrders = (int) orders.stream()
-                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.COMPLETED)
-                .count();
-        int inProgressOrders = (int) orders.stream()
-                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.IN_PROGRESS)
-                .count();
-        int cancelledOrders = (int) orders.stream()
-                .filter(order -> order.getStatus() == gpb.command.model.OrderStatus.CANCELLED)
-                .count();
-
-        double averageItemsPerOrder = orders.isEmpty() ? 0 :
-                orders.stream().mapToDouble(order -> order.getItems().size()).average().orElse(0);
-
-        double averagePrice = orders.stream().mapToDouble(OrderDto::getPrice).sum();
-
-        return new OrderStatisticDto(
-                totalOrders,
-                completedOrders,
-                inProgressOrders,
-                cancelledOrders,
-                averagePrice,
-                averageItemsPerOrder
-        );
+        return queryService.getOrderStatistics();
     }
 }
