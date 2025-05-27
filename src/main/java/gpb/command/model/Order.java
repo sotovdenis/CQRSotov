@@ -4,7 +4,6 @@ import gpb.common.event.*;
 import gpb.common.event.base.EventBus;
 import gpb.common.exception.InvalidStatusTransitionException;
 
-import java.awt.*;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,20 +71,17 @@ public class Order {
         );
     }
 
-    public void updateItem(String dishName, int newQuantity) {
+    public void updateItem(int pointer, int newQuantity) {
         if (newQuantity <= 0) {
             throw new IllegalArgumentException("Количество должно быть положительным");
         }
 
-        OrderItem itemToUpdate = items.stream()
-                .filter(item -> item.getDishName().equals(dishName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Блюдо не найдено в заказе"));
+        OrderItem itemToUpdate = items.get(pointer);
 
         itemToUpdate.setQuantity(newQuantity);
 
         EventBus.getInstance().publish(
-                new DishUpdatedInOrderEvent(orderId, dishName, newQuantity)
+                new DishUpdatedInOrderEvent(orderId, itemToUpdate.getDishName(), newQuantity)
         );
     }
 

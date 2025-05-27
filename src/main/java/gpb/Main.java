@@ -35,7 +35,7 @@ public class Main {
 
         try {
             restaurantFacade.createOrder("John Doe");
-            restaurantFacade.createOrder("Jane Smith");
+            restaurantFacade.createOrder("John Posle");
 
             String order1Id = restaurantFacade.getAllOrders().get(0).getOrderId();
             String order2Id = restaurantFacade.getAllOrders().get(1).getOrderId();

@@ -5,13 +5,13 @@ import java.util.UUID;
 public class UpdateDishQuantityCommand implements Command {
     private final String commandId;
     private final String orderId;
-    private final String dishName;
+    private final int pointer;
     private final int newQuantity;
 
-    public UpdateDishQuantityCommand(String orderId, String dishName, int newQuantity) {
+    public UpdateDishQuantityCommand(String orderId, int pointer, int newQuantity) {
         this.commandId = UUID.randomUUID().toString();
         this.orderId = orderId;
-        this.dishName = dishName;
+        this.pointer = pointer;
         this.newQuantity = newQuantity;
     }
 
@@ -28,7 +28,7 @@ public class UpdateDishQuantityCommand implements Command {
         return newQuantity;
     }
 
-    public String getDishName() {
-        return dishName;
+    public int getPointer() {
+        return pointer;
     }
 }

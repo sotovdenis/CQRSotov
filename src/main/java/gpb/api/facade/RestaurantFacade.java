@@ -27,8 +27,8 @@ public class RestaurantFacade {
         commandBus.dispatch(new AddDishToOrderCommand(orderId, dish, quantity));
     }
 
-    public void updateDishInOrder(String orderId, String dishName, int newQuantity) {
-        commandBus.dispatch(new UpdateDishQuantityCommand(orderId, dishName, newQuantity));
+    public void updateDishInOrder(String orderId, int pointer, int newQuantity) {
+        commandBus.dispatch(new UpdateDishQuantityCommand(orderId, pointer, newQuantity));
     }
 
     public void updateOrder(String orderId, int pointer, int newDishPointer, int quantity) {

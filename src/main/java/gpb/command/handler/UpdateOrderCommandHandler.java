@@ -2,7 +2,6 @@ package gpb.command.handler;
 
 import gpb.command.command.UpdateOrderCommand;
 import gpb.command.model.Order;
-import gpb.command.model.OrderItem;
 import gpb.command.repository.OrderRepository;
 import gpb.common.exception.OrderNotFoundException;
 

@@ -80,7 +80,11 @@ public class OrderQueryService {
         double averageItemsPerOrder = orders.isEmpty() ? 0 :
                 orders.stream().mapToDouble(order -> order.getItems().size()).average().orElse(0);
 
-        double averagePrice = orders.stream().mapToDouble(OrderView::getPrice).sum();
+        double averagePrice = 0d;
+
+        for (int i = 0; i < orders.size(); i++) {
+            averagePrice += orders.get(i).getPrice();
+        }
 
         return new OrderStatisticDto(
                 totalOrders,

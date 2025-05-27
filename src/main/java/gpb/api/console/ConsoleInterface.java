@@ -10,6 +10,8 @@ import gpb.query.dto.OrderStatisticDto;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConsoleInterface {
     private final RestaurantFacade restaurantFacade;
@@ -76,6 +78,7 @@ public class ConsoleInterface {
         System.out.println("║ 8.  Обновить статус заказа                    ║");
         System.out.println("║ 9.  Закрыть заказ                             ║");
         System.out.println("║ 10. Статистика заказов                        ║");
+        System.out.println("║ 11. МЕНЮ                                      ║");
         System.out.println("║ 0.  Выход                                     ║");
 
         System.out.println(footer);
@@ -118,6 +121,9 @@ public class ConsoleInterface {
                     break;
                 case 10:
                     showOrderStatistics();
+                    break;
+                case 11:
+                    showMenu();
                     break;
                 default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
@@ -236,7 +242,7 @@ public class ConsoleInterface {
         System.out.print("Введите новое количество: ");
         int newQuantity = readIntInput();
         scanner.nextLine();
-        restaurantFacade.updateDishInOrder(orderId, dish.getName(), newQuantity);
+        restaurantFacade.updateDishInOrder(orderId, pointer - 1, newQuantity);
         System.out.println("Количество блюда успешно изменено!");
     }
 
@@ -338,6 +344,19 @@ public class ConsoleInterface {
     private void showOrderStatistics() {
         OrderStatisticDto stats = restaurantFacade.getOrderStatistics();
 
+        double number = stats.getAveragePrice();
+        String str = String.valueOf(number);
+
+        Pattern pattern = Pattern.compile("^\\d+\\.\\d{2}");
+        Matcher matcher = pattern.matcher(str);
+
+        String num = null;
+        if (matcher.find()) {
+            num = matcher.group();
+        } else {
+            System.out.println("Формат не соответствует ожиданиям.");
+        }
+
         String border = "╔═══════════════════════════════════════╗";
         String footer = "╚═══════════════════════════════════════╝";
 
@@ -349,9 +368,22 @@ public class ConsoleInterface {
         System.out.println("  Завершенных заказов:            " + stats.getCompletedOrders());
         System.out.println("  Заказов в процессе:             " + stats.getInProgressOrders());
         System.out.println("  Отмененных заказов:             " + stats.getCancelledOrders());
-        System.out.println("  Средний чек:                    " + stats.getAveragePrice());
+        System.out.println("  Средний чек:                    " + num);
         System.out.println("Среднее количество блюд на заказ: " + String.format("%.2f", stats.getAverageItemsPerOrder()));
 
+        System.out.println(footer);
+    }
+
+    public void showMenu() {
+        String border = "╔═════════════════════════════════════════╗";
+        String footer = "╚═════════════════════════════════════════╝";
+
+        System.out.println("--------------- НАШЕ МЕНЮ ---------------");
+
+        System.out.println(border);
+        for (Menu dish : Menu.values()) {
+            System.out.printf(Double.valueOf(dish.getNumberInMenu()).intValue() + ". %s (%,.2f руб.)%n", dish.getName(), dish.getPrice());
+        }
         System.out.println(footer);
     }
 

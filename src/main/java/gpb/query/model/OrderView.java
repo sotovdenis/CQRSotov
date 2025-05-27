@@ -40,7 +40,7 @@ public class OrderView {
     }
 
     public double getPrice() {
-        return price;
+        return this.price = this.items.stream().mapToDouble(OrderItemView::getPrice).sum();
     }
 
     public LocalDateTime getCreatedAt() {

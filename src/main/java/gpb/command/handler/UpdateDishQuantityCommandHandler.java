@@ -21,7 +21,7 @@ public class UpdateDishQuantityCommandHandler implements CommandHandler<UpdateDi
 
         Order order = orderRepository.findById(command.getOrderId());
 
-        order.updateItem(command.getDishName(), command.getNewQuantity());
+        order.updateItem(command.getPointer(), command.getNewQuantity());
 
         orderRepository.save(order);
     }
