@@ -323,7 +323,9 @@ public class ConsoleInterface {
         String orderId = scanner.nextLine().trim();
         System.out.println("Доступные статусы:");
         for (OrderStatus status : OrderStatus.values()) {
-            System.out.println(status.getNumberInEnum() + ". " + status.getDisplayName());
+            if (!status.equals(OrderStatus.CLOSED)) {
+                System.out.println(status.getNumberInEnum() + ". " + status.getDisplayName());
+            }
         }
         System.out.print("Выберите номер нового статуса: ");
         int statusNumber = scanner.nextInt();
