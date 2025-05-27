@@ -8,6 +8,8 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gpb.command.model.Menu.BURGER_CLASSIC;
+
 public class Order {
     private final String orderId;
     private final String customerName;
@@ -60,6 +62,15 @@ public class Order {
         }
         if (quantity <= 0) {
             throw new IllegalArgumentException("Количество должно быть положительным");
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            OrderItem item = this.items.get(i);
+            if (item.getDishName().trim().equalsIgnoreCase(menuDish.getName())) {
+                int oldQuantity = item.getQuantity();
+                updateItem(i, quantity + oldQuantity);
+                return;
+            }
         }
 
         OrderItem newItem = new OrderItem(menuDish.getName(), menuDish.getPrice(), quantity);
