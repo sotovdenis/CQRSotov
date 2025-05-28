@@ -286,6 +286,8 @@ public class ConsoleInterface {
                 case "y" -> {
                     System.out.println("Окей, но придется заново готовить!");
 
+                    restaurantFacade.updateOrderStatus(orderId, OrderStatus.IN_PROGRESS);
+
                     System.out.print("Введите новое количество: ");
                     int newQuantity = readIntInput();
                     scanner.nextLine();
@@ -359,19 +361,19 @@ public class ConsoleInterface {
             System.out.println("Формат не соответствует ожиданиям.");
         }
 
-        String border = "╔═══════════════════════════════════════╗";
-        String footer = "╚═══════════════════════════════════════╝";
+        String border = "╔═══════════════════════════════════════════╗";
+        String footer = "╚═══════════════════════════════════════════╝";
 
-        System.out.println("\n ---------- Статистика заказов ---------- ");
+        System.out.println("\n ------------ Статистика заказов ------------ ");
 
         System.out.println(border);
 
-        System.out.println("  Всего заказов:                  " + stats.getTotalOrders());
-        System.out.println("  Завершенных заказов:            " + stats.getCompletedOrders());
-        System.out.println("  Заказов в процессе:             " + stats.getInProgressOrders());
-        System.out.println("  Отмененных заказов:             " + stats.getCancelledOrders());
-        System.out.println("  Средний чек:                    " + num);
-        System.out.println("Среднее количество блюд на заказ: " + String.format("%.2f", stats.getAverageItemsPerOrder()));
+        System.out.println("  Всего заказов:                    " + stats.getTotalOrders());
+        System.out.println("  Завершенных заказов:              " + stats.getCompletedOrders());
+        System.out.println("  Заказов в процессе:               " + stats.getInProgressOrders());
+        System.out.println("  Отмененных заказов:               " + stats.getCancelledOrders());
+        System.out.println("  Средний чек:                      " + num);
+        System.out.println("  Среднее количество блюд на заказ: " + String.format("%.2f", stats.getAverageItemsPerOrder()));
 
         System.out.println(footer);
     }

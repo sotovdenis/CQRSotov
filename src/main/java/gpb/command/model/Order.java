@@ -179,6 +179,6 @@ public class Order {
             return false;
         }
 
-        return newStatus.ordinal() == currentStatus.ordinal() + 1;
+        return newStatus.ordinal() == currentStatus.ordinal() + 1 || newStatus.ordinal() == currentStatus.ordinal();
     }
 }
